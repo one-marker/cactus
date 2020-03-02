@@ -2,18 +2,27 @@ package com.rival;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddDialog.OnInputListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -31,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         listItems = new ArrayList<>();
 
-        for (int i = 0; i <5; i++){
+
+        for (int i = 0; i <3; i++){
             CardModel listItem = new CardModel("Купить маркер серии " + i);
             listItems.add(listItem);
             System.out.println(i);
@@ -42,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder dragged,
+                                  @NonNull RecyclerView.ViewHolder target) {
 
                 int posotion_dragged = dragged.getAdapterPosition();
                 int position_target = target.getAdapterPosition();
@@ -61,5 +74,40 @@ public class MainActivity extends AppCompatActivity {
         });
         helper.attachToRecyclerView(recyclerView);
 
+        Button addButton = (Button) findViewById(R.id.add_button);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+//                    CardModel listItem = new CardModel("1");
+//                    listItems.add(listItem);
+//                //dapter = new MyAdapter(listItems, this);
+//                recyclerView.setAdapter(adapter);
+//                recyclerView.scrollToPosition(listItems.size() - 1);
+
+                AddDialog dialogFragment = new AddDialog();
+                dialogFragment.show(getSupportFragmentManager(), "");
+
+
+
+
+            }
+            });
+
+
+
+
+    }
+
+    @Override
+    public void sendInput(String input) {
+
+        CardModel listItem = new CardModel(input);
+
+        listItems.add(listItem);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.scrollToPosition(listItems.size() - 1);
     }
 }

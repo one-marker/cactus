@@ -3,11 +3,16 @@
     <color name="colorPrimary">#4285F4</color>
     <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#27AE60</color>
-    <color name="colorGreen">#339900</color>
     <color name="colorGreen2">#27AE60</color>
+    <color name="GreenButton">#6FCF97</color>
+
+    <color name="redError">#D50000</color>
+
 
     <color name="colorBlack">#333333</color>
-    <color name="colorGrey">#CCCCCC</color>
+
+
+    <color name="colorGreyDialog">#FAFAFA</color>
     <color name="colorWhiteGrey">#FAFAFA</color>
     <color name="colorWhite">#FFF</color>
 </resources>

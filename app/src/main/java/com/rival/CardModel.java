@@ -1,10 +1,15 @@
 package com.rival;
 
 public class CardModel {
-    private String text = "234234234";
+    private String text;
+    private Boolean check = false;
 
     public CardModel(String text) {
         this.text = text;
+    }
+    public CardModel(Boolean check, String text) {
+        this.text = text;
+        this.check = check;
     }
 
     public String getText() {
@@ -16,4 +21,11 @@ public class CardModel {
     }
 
 
+    public boolean getChecked() {
+        return check;
+    }
+
+    public void setChecked(Boolean check) {
+        this.check = check;
+    }
 }

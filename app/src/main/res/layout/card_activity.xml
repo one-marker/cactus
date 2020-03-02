@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="253dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
                 android:fontFamily="sans-serif-medium"
@@ -49,12 +49,12 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="20dp" />
 
-            <ImageView
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+<!--            <ImageView-->
+<!--                android:id="@+id/checkBox2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
 
-                android:src="@drawable/ic_more_horiz_black_24dp" />
+<!--                android:src="@drawable/ic_more_horiz_black_24dp" />-->
 
         </LinearLayout>
 
