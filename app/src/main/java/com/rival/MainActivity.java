@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,13 +21,23 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static android.provider.Telephony.Mms.Part.FILENAME;
+
 public class MainActivity extends AppCompatActivity implements AddDialog.OnInputListener {
 
+    private static final String LOG_TAG = "FIle" ;
+    final String FILENAME = "file";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -68,12 +80,15 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
                 int posotion_dragged = dragged.getAdapterPosition();
                 int position_target = target.getAdapterPosition();
-                Toast.makeText(getApplicationContext(),posotion_dragged + "В "+position_target,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),posotion_dragged + "В "+position_target,Toast.LENGTH_LONG).show();
 
 
                 Collections.swap(listItems,posotion_dragged, position_target);
                 adapter.notifyItemMoved(posotion_dragged, position_target);
+                ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+                adapter.notifyItemRangeChanged(0,adapter.getItemCount());
 
+                //adapter.();
 
                 return false;
             }
@@ -85,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
             }
         });
         helper.attachToRecyclerView(recyclerView);
+
 
 
 
@@ -117,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
         remove_button.setVisibility(View.GONE);
 
+        writeFile();
+        readFile();
+
 
 
 
@@ -133,5 +152,42 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
        // recyclerView.scrollToPosition(listItems.size()-1);
         recyclerView.smoothScrollToPosition(listItems.size()-1);
+    }
+
+    void writeFile() {
+        try {
+            // отрываем поток для записи
+            BufferedWriter bw;
+            bw = new BufferedWriter(new OutputStreamWriter(
+                    openFileOutput(FILENAME, MODE_PRIVATE)));
+            // пишем данные
+            bw.write("Содержимое файла");
+            bw.write("Содержимое файла3");
+            // закрываем поток
+            bw.close();
+            Log.d(LOG_TAG, "Файл записан");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void readFile() {
+        try {
+            // открываем поток для чтения
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    openFileInput(FILENAME)));
+            String str = "";
+            // читаем содержимое
+            while ((str = br.readLine()) != null) {
+                Log.d(LOG_TAG, str);
+                System.out.println(str);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -74,12 +74,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.itemView.setActivated(selecteditems.get(position,false));
         //holder.
 
-
+        if(holder.checkBox.isChecked())
+        {
+            holder.textViewHead.setPaintFlags(holder.textViewHead.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.checkBox.setChecked(true);
+        }
+        else
+        {
+            holder.textViewHead.setPaintFlags(0);
+            holder.checkBox.setChecked(false);
+        }
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Position " + position);
+
                 if(holder.checkBox.isChecked()){
+
                     holder.textViewHead.setPaintFlags(holder.textViewHead.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     remove_button.setVisibility(View.VISIBLE);
                     Animation animShake = AnimationUtils.loadAnimation(context, R.anim.anim);
@@ -88,10 +98,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //                    notifyItemRemoved(position);
                 }
                 else{
+
                     int k = 0;
                     for(int i=0; i<listItems.size(); i++)
                         if (listItems.get(i).getChecked() == false)
                             k++;
+
+
+
+
                      if(k==listItems.size()-1)
                          remove_button.setVisibility(View.GONE);
 
@@ -112,21 +127,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(final View v) {
 
-                System.out.println("listItems size " + listItems.size());
-
-//                listItems.remove(2);
-//
-//                //notifyItemRemoved(2);
-//                removeItem(2);
-
-//                    CardModel listItem = new CardModel("1");
-//                    listItems.add(listItem);
-//                //dapter = new MyAdapter(listItems, this);
-//                recyclerView.setAdapter(adapter);
-//                recyclerView.scrollToPosition(listItems.size() - 1);
-                //notifyItemRemoved(position);
                   for(int i = getItemCount()-1; i>=0; i--){
-
 
                     if (listItems.get(i).getChecked() == true) {
                         listItems.remove(i);
@@ -137,7 +138,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 }
 
 
-                // recyclerView.setAdapter(adapter);
                 remove_button.setVisibility(View.GONE);
 
 
@@ -145,9 +145,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         });
 
         if(holder.checkBox.isChecked())
+        {
             holder.textViewHead.setPaintFlags(holder.textViewHead.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.checkBox.setChecked(true);
+        }
         else
+        {
             holder.textViewHead.setPaintFlags(0);
+            holder.checkBox.setChecked(false);
+
+        }
+
 
 //        remove_button.setVisibility(View.VISIBLE);
 //
