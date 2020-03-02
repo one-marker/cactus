@@ -79,14 +79,41 @@
 
     </androidx.cardview.widget.CardView>
 
+    <Button
+        android:id="@+id/remove_button"
+
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/header"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="20dp"
+
+        android:layout_marginBottom="6dp"
+
+        android:background="#E8EBEE"
+        android:fontFamily="sans-serif"
+        android:text="Удалить"
+        android:textColor="@color/colorBlack"
+        android:textAllCaps="false"
+        android:textSize="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:layout_below="@+id/header"
-        android:layout_marginTop="1dp">
+
+        android:layout_below="@+id/remove_button"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="1dp"
+        android:paddingBottom="0dp">
 
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -105,6 +132,7 @@
         android:id="@+id/add_button"
         android:fontFamily="sans-serif-black"
         android:textSize="26dp"
+
         />
 
 

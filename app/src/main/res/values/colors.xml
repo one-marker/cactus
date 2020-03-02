@@ -14,5 +14,7 @@
 
     <color name="colorGreyDialog">#FAFAFA</color>
     <color name="colorWhiteGrey">#FAFAFA</color>
+    <color name="DarkGrey">#979797</color>
+
     <color name="colorWhite">#FFF</color>
 </resources>

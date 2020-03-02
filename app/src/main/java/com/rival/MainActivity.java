@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,13 +29,17 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    private List<CardModel> listItems;
+    public List<CardModel> listItems;
 
+
+    private Button remove_button;
+    private Button addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        addButton = (Button) findViewById(R.id.add_button);
+        remove_button = (Button) findViewById(R.id.remove_button);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -41,13 +47,15 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
         listItems = new ArrayList<>();
 
 
-        for (int i = 0; i <3; i++){
+        for (int i = 0; i <13; i++){
             CardModel listItem = new CardModel("Купить маркер серии " + i);
             listItems.add(listItem);
             System.out.println(i);
         }
-        adapter = new MyAdapter(listItems, this);
+
+        adapter = new MyAdapter(listItems, this,remove_button, recyclerView);
         recyclerView.setAdapter(adapter);
+
 
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper
@@ -60,21 +68,25 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
                 int posotion_dragged = dragged.getAdapterPosition();
                 int position_target = target.getAdapterPosition();
+                Toast.makeText(getApplicationContext(),posotion_dragged + "В "+position_target,Toast.LENGTH_LONG).show();
+
 
                 Collections.swap(listItems,posotion_dragged, position_target);
                 adapter.notifyItemMoved(posotion_dragged, position_target);
+
 
                 return false;
             }
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Toast.makeText(getApplicationContext(),direction + "В33",Toast.LENGTH_LONG).show();
 
             }
         });
         helper.attachToRecyclerView(recyclerView);
 
-        Button addButton = (Button) findViewById(R.id.add_button);
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 //                recyclerView.setAdapter(adapter);
 //                recyclerView.scrollToPosition(listItems.size() - 1);
 
+
+
+//                Animation animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
+//                remove_button.startAnimation(animShake);
                 AddDialog dialogFragment = new AddDialog();
                 dialogFragment.show(getSupportFragmentManager(), "");
 
@@ -98,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
 
 
+
+        remove_button.setVisibility(View.GONE);
+
+
+
+
     }
 
     @Override
@@ -106,8 +128,10 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
         CardModel listItem = new CardModel(input);
 
         listItems.add(listItem);
-        recyclerView.setAdapter(adapter);
+        adapter.notifyItemRemoved(adapter.getItemCount());
 
-        recyclerView.scrollToPosition(listItems.size() - 1);
+
+       // recyclerView.scrollToPosition(listItems.size()-1);
+        recyclerView.smoothScrollToPosition(listItems.size()-1);
     }
 }
