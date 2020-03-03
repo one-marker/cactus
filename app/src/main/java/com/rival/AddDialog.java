@@ -60,8 +60,12 @@ public class AddDialog extends DialogFragment {
                 Log.e(TAG, "Text: : " + sText );
 
 
-                if(sText.trim().equalsIgnoreCase("")){
+                if (sText.trim().equalsIgnoreCase("")) {
+
+
                     Toast.makeText(getActivity().getApplicationContext(),"Введите текст... ",Toast.LENGTH_LONG).show();
+
+
 
                   //  Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.anim);
                    // errorText.startAnimation(animShake);

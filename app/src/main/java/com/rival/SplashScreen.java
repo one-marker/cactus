@@ -11,7 +11,7 @@ import android.view.WindowManager;
 public class SplashScreen extends AppCompatActivity {
 
 
-    private final int SPLASH_DISPLAY_LENGTH = 0; //отображается 5 сек
+    private final int SPLASH_DISPLAY_LENGTH = 1000; //отображается 5 сек
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,8 @@
 package com.rival;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,34 +11,77 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.rival.GroceryContract.GroceryEntry;
 
+import static com.rival.SQL.act.*;
+import static com.rival.SQL.act.Clear;
+import static com.rival.SQL.act.Read;
 
-public class SQL extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "grocerylist.db";
-    public static final int DATABASE_VERSION = 1;
 
-    public SQL(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+public class SQL{
+
+
+    DBHelper dbHelper;
+    static SQLiteDatabase database;
+    static ContentValues contentValues;
+
+    enum act {Add, Read, Clear, Delete};
+
+    public SQL(DBHelper othrtdbHelper) {
+
+        dbHelper = othrtdbHelper;
+        database = dbHelper.getWritableDatabase();
+        contentValues = new ContentValues();
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_GROCERYLIST_TABLE = "CREATE TABLE " +
-                GroceryEntry.TABLE_NAME + " (" +
-                GroceryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                GroceryEntry.COLUMN_NAME + " TEXT NOT NULL, " +
-                GroceryEntry.COLUMN_AMOUNT + " INTEGER NOT NULL, " +
-                GroceryEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                ");";
+    public void action(act action)
+    {
+            switch (action) {
 
-        db.execSQL(SQL_CREATE_GROCERYLIST_TABLE);
-    }
+            case Add:
+                contentValues.put(DBHelper.KEY_TEXT, "5");
+                contentValues.put(DBHelper.KEY_STATUS, "true");
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + GroceryEntry.TABLE_NAME);
-        onCreate(db);
-    }
+                database.insert(DBHelper.TABLE_CONTACTS, null, contentValues);
+                break;
+
+            case Read:
+                Cursor cursor = database.query(DBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
+                    int nameIndex = cursor.getColumnIndex(DBHelper.KEY_TEXT);
+                    int emailIndex = cursor.getColumnIndex(DBHelper.KEY_STATUS);
+                    do {
+                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
+                                ", name = " + cursor.getString(nameIndex) +
+                                ", email = " + cursor.getString(emailIndex));
+                    } while (cursor.moveToNext());
+                } else
+                    Log.d("mLog", "0 rows");
+
+                cursor.close();
+                break;
+
+            case Clear:
+                database.delete(DBHelper.TABLE_CONTACTS, null, null);
+                break;
+        }
+
+
+
+//            case act.Delete:
+//                if (id.equalsIgnoreCase("")){
+//                    break;
+//                }
+//                int delCount = database.delete(DBHelper.TABLE_CONTACTS, DBHelper.KEY_ID + "=" + id, null);
+//
+//                Log.d("mLog", "deleted rows count = " + delCount);
+
+
+        }
+
+
 }

@@ -6,6 +6,11 @@ public class CardModel {
 
     public CardModel(String text) {
         this.text = text;
+
+    }
+    public CardModel(String text, Boolean check) {
+        this.text = text;
+        this.check = check;
     }
     public CardModel(Boolean check, String text) {
         this.text = text;
