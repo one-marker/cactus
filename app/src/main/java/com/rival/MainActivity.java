@@ -51,78 +51,36 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
 
     public List<CardModel> listItems;
 
+    SQLiteDatabase database;
     DBHelper dbHelper;
+    SQL sql;
     private Button remove_button;
     private Button addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         addButton = (Button) findViewById(R.id.add_button);
         remove_button = (Button) findViewById(R.id.remove_button);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         dbHelper = new DBHelper(this);
-        //dbHelper.removeDatabase();
-
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         listItems = new ArrayList<>();
 
+        database = dbHelper.getWritableDatabase();
 
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        sql = new SQL(dbHelper);
 
-        SQL sql = new SQL(dbHelper);
+        listItems = sql.read();
 
-        sql.action(SQL.act.Add);
-        sql.action(SQL.act.Read);
-        sql.action(SQL.act.Clear);
-        sql.action(SQL.act.Add);
-        sql.action(SQL.act.Read);
-        sql.action(SQL.act.Delete);
-        dbHelper.close();
-        //dbHelper.onUpgrade(database,1,1);
+        Cursor cursor = database.query(DBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
 
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(DBHelper.KEY_TEXT, "1");
-//        contentValues.put(DBHelper.KEY_STATUS, "true");
-//
-//        database.insert(DBHelper.TABLE_CONTACTS, null, contentValues);
-//        Cursor cursor = database.query(DBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
-//
-//
-//
-//
-//
-//
-//
-//
-//        //for (int i = 0; i <13; i++){
-//
-//            if (cursor.moveToFirst()) {
-//                int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
-//                int text = cursor.getColumnIndex(DBHelper.KEY_TEXT);
-//                int status = cursor.getColumnIndex(DBHelper.KEY_STATUS);
-//                do {
-//                    CardModel listItem = new CardModel( cursor.getString(text), Boolean.parseBoolean(cursor.getString(status)) );
-//
-//                    Toast.makeText(getApplicationContext(),cursor.getString(text),Toast.LENGTH_LONG).show();
-//                    Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
-//                            ", text = " + cursor.getString(text) +
-//                            ", email = " + cursor.getString(status));
-//
-//                    listItems.add(listItem);
-//
-//
-//                  //  System.out.println(i);
-//                } while (cursor.moveToNext());
-//            } else {
-//                Log.d("mLog","0 rows");
-//            }
 
-       // }
-       // cursor.close();
 
 
 
@@ -156,9 +114,10 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
             }
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
                 //recyclerViewAdapter.onItemDismiss(viewHolder.AdapterPosition);
             }
+
+
 
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -221,12 +180,6 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
                 return false;
             }
 
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//
-//               // Toast.makeText(getApplicationContext(),direction + "В33",Toast.LENGTH_LONG).show();
-//
-//            }
         });
         helper.attachToRecyclerView(recyclerView);
 
@@ -237,54 +190,14 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
             @Override
             public void onClick(final View v) {
 
-//                    CardModel listItem = new CardModel("1");
-//                    listItems.add(listItem);
-//                //dapter = new MyAdapter(listItems, this);
-//                recyclerView.setAdapter(adapter);
-//                recyclerView.scrollToPosition(listItems.size() - 1);
-
-
-
-//                Animation animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
-//                remove_button.startAnimation(animShake);
-                AddDialog dialogFragment = new AddDialog();
-                dialogFragment.show(getSupportFragmentManager(), "");
-
-
-
-
+                listItems.remove(0);
+                sql.update(listItems);
+//                AddDialog dialogFragment = new AddDialog();
+//                dialogFragment.show(getSupportFragmentManager(), "");
+//
             }
             });
-
-
-
-
-
-
-
-
         remove_button.setVisibility(View.GONE);
-
-//        writeFile();
-//        readFile();
-//
-//
-
-
-
-        //case R.id.btnClear:
-      //  database.delete(DBHelper.TABLE_CONTACTS, null, null);
-
-
-
-
-
-
-        ///
-
-
-
-
     }
 
     @Override
@@ -293,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements AddDialog.OnInput
         CardModel listItem = new CardModel(input);
 
         listItems.add(listItem);
+        sql.add(input,"false");
+
         adapter.notifyItemRemoved(adapter.getItemCount());
 
 

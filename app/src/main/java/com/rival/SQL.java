@@ -1,23 +1,14 @@
 package com.rival;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 
-
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.rival.GroceryContract.GroceryEntry;
-
-import static com.rival.SQL.act.*;
-import static com.rival.SQL.act.Clear;
-import static com.rival.SQL.act.Read;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SQL{
@@ -27,7 +18,6 @@ public class SQL{
     static SQLiteDatabase database;
     static ContentValues contentValues;
 
-    enum act {Add, Read, Clear, Delete};
 
     public SQL(DBHelper othrtdbHelper) {
 
@@ -36,39 +26,62 @@ public class SQL{
         contentValues = new ContentValues();
     }
 
-    public void action(act action)
-    {
-            switch (action) {
+    private static boolean toBoolean(String name) {
+        return ((name != null) && name.equalsIgnoreCase("true"));
+    }
 
-            case Add:
-                contentValues.put(DBHelper.KEY_TEXT, "5");
-                contentValues.put(DBHelper.KEY_STATUS, "true");
+    public void add(String text, String status){
 
-                database.insert(DBHelper.TABLE_CONTACTS, null, contentValues);
-                break;
+        contentValues.put(DBHelper.KEY_TEXT, text);
 
-            case Read:
-                Cursor cursor = database.query(DBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+        contentValues.put(DBHelper.KEY_STATUS, status);
 
-                if (cursor.moveToFirst()) {
-                    int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
-                    int nameIndex = cursor.getColumnIndex(DBHelper.KEY_TEXT);
-                    int emailIndex = cursor.getColumnIndex(DBHelper.KEY_STATUS);
-                    do {
-                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
-                                ", name = " + cursor.getString(nameIndex) +
-                                ", email = " + cursor.getString(emailIndex));
-                    } while (cursor.moveToNext());
-                } else
-                    Log.d("mLog", "0 rows");
+        database.insert(DBHelper.TABLE_CONTACTS, null, contentValues);
+    }
+    public List<CardModel> read(){
 
-                cursor.close();
-                break;
+        List<CardModel> listItems = new ArrayList<>();
 
-            case Clear:
-                database.delete(DBHelper.TABLE_CONTACTS, null, null);
-                break;
+        Cursor cursor = database.query(DBHelper.TABLE_CONTACTS, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+
+            int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
+            int textIndex = cursor.getColumnIndex(DBHelper.KEY_TEXT);
+            int statusIndex = cursor.getColumnIndex(DBHelper.KEY_STATUS);
+
+            do {
+
+                CardModel listItem = new CardModel(cursor.getString(textIndex),toBoolean(cursor.getString(statusIndex)));
+                listItems.add(listItem);
+                Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
+                        ", text = " + cursor.getString(textIndex) +
+                        ", status = " + cursor.getString(statusIndex));
+            } while (cursor.moveToNext());
+        } else
+            Log.d("mLog", "0 rows");
+
+
+        cursor.close();
+
+        return listItems;
+
+    }
+
+    public void clear(){
+        database.delete(DBHelper.TABLE_CONTACTS, null, null);
+    }
+
+
+    public void update(List<CardModel> listItems ){
+
+        clear();
+
+        for(CardModel listItem: listItems){
+            Boolean status = listItem.getChecked();
+            add(listItem.getText(),status.toString());
         }
+    }
 
 
 
@@ -81,7 +94,7 @@ public class SQL{
 //                Log.d("mLog", "deleted rows count = " + delCount);
 
 
-        }
+
 
 
 }

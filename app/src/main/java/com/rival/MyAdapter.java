@@ -76,6 +76,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         if(holder.checkBox.isChecked())
         {
+
             holder.textViewHead.setPaintFlags(holder.textViewHead.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.checkBox.setChecked(true);
         }
@@ -89,6 +90,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(View v) {
 
                 if(holder.checkBox.isChecked()){
+
+
+                    Boolean status = holder.checkBox.isChecked();
+                    System.out.println("Status: " +  status.toString());
 
                     holder.textViewHead.setPaintFlags(holder.textViewHead.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     remove_button.setVisibility(View.VISIBLE);
