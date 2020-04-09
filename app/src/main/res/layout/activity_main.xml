@@ -41,37 +41,60 @@
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
 
-        app:cardCornerRadius="3dp"
         android:layout_marginTop="6dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-
+        app:cardElevation="0dp"
         >
 
         <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
 
             >
 
 
-
-            <TextView
+            <EditText
                 android:id="@+id/textView"
-                android:layout_width="248dp"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:fontFamily="sans-serif-black"
-                android:paddingLeft="6dp"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
                 android:orientation="horizontal"
+                android:paddingLeft="0dp"
                 android:paddingBottom="0dp"
-                android:text="Мой список"
+                android:text="@string/myList"
                 android:textColor="@color/colorBlack"
-                android:textSize="26dp" />
+                android:textSize="26dp"
 
+                />
+
+            <Button
+                android:id="@+id/done"
+
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="0dp"
+                android:background="#27AE60"
+                android:fontFamily="sans-serif"
+                android:padding="0dp"
+                android:text="Готово"
+                android:textAllCaps="false"
+                android:textColor="@color/colorGreyDialog"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
@@ -95,45 +118,71 @@
 
         android:background="#E8EBEE"
         android:fontFamily="sans-serif"
-        android:text="Удалить"
-        android:textColor="@color/colorBlack"
+        android:text="@string/remove"
         android:textAllCaps="false"
+        android:textColor="@color/colorBlack"
         android:textSize="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
 
-        android:layout_below="@+id/remove_button"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="false"
-        android:layout_marginTop="1dp"
-        android:paddingBottom="0dp">
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
 
-    </androidx.recyclerview.widget.RecyclerView>
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:layout_below="@+id/remove_button"
+            android:layout_above="@id/add_button"
+
+            android:paddingBottom="0dp">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        style="@style/Widget.AppCompat.Button.Colored"
-
-        android:background="@mipmap/add_icon"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-
-        android:layout_margin="20dp"
         android:id="@+id/add_button"
-        android:fontFamily="sans-serif-black"
-        android:textSize="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+
+        android:layout_marginRight="20dp"
+
+        android:layout_marginBottom="16dp"
+        android:background="#27AE60"
+        android:fontFamily="sans-serif"
+        android:text="@string/add"
+        android:textAllCaps="false"
+        android:textColor="@color/colorGreyDialog"
+        android:textSize="16dp"
 
         />
+
+
+
+    <!--    <Button-->
+<!--        style="@style/Widget.AppCompat.Button.Colored"-->
+
+<!--        android:background="@mipmap/add_icon"-->
+<!--        android:layout_width="55dp"-->
+<!--        android:layout_height="55dp"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+
+<!--        android:layout_margin="20dp"-->
+<!--        android:id="@+id/add_button"-->
+<!--        android:fontFamily="sans-serif-black"-->
+<!--        android:textSize="26dp"-->
+
+<!--        />-->
+
 
 
 

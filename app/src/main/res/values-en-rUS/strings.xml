@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cactus</string>
+    <string name="myList">My list</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="save">Save</string>
+    <string name="newItem">New entry</string>
+    <string name="notes">Notes</string>
+    <string name="inputText">Enter a title for the entry</string>
+    <string name="errListName">The maximum length of the list name is 255 characters</string>
+    <string name="errTitle">Maximum header length 255 characters</string>
+    <string name="errText">Maximum note length 1000 characters</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.rival;
+package com.meCactus;
 
 import android.content.Context;
 
